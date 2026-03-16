@@ -35,7 +35,7 @@ B_y
 @kwdef struct BConfig{𝐵,𝐿} <: MagneticField
     B0::𝐵
     By::𝐵 = 0.0
-    Bz::𝐵
+    Bz::𝐵 = 1.0
     L::𝐿 = 1.0
     a::Float64 = 0.0
 end
@@ -43,6 +43,21 @@ end
 function (c::BConfig)(z::Number)
     z̃ = z / c.L
     Bx = c.B0 * z̃ / (1 + c.a * z̃^2)^2
+    return SA[Bx, c.By, c.Bz]
+end
+
+# B_x = B_0 * (z/L) / (1 + a * (z/L)^2)^2
+@kwdef struct BConfig2{𝐵,𝐿} <: MagneticField
+    B0::𝐵
+    By::𝐵 = 0.0
+    Bz::𝐵 = 1.0
+    L::𝐿 = 1.0
+    a::Float64 = 0.0
+end
+
+function (c::BConfig2)(z::Number)
+    z̃ = z / c.L
+    Bx = c.B0 * tanh(z̃) / (1 + c.a * z̃^2)^2
     return SA[Bx, c.By, c.Bz]
 end
 ```
@@ -58,26 +73,32 @@ using CurrentSheetTestParticle.Analysis
 using Observables
 using CairoMakie, MakieBake
 
-params = Observable((a=0.1, By=0.0))
+params = Observable((B0=10., a=0.1, By=0.0))
 
-fig = Figure()
+fig = Figure(; size=(800, 400))
 @lift begin
     save_everystep = false
-    cfg_val = BConfig(; B0=10., Bz=1., a=$params.a, By=$params.By)
-    sols = solve_params(ProblemParamsBase(; B=cfg_val, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
-    df = process_sols(sols)
-    plot_transition_matrix!(fig[1, 1], df)
+    cfg1 = BConfig(; B0=$params.B0, a=$params.a, By=$params.By)
+    cfg2 = BConfig2(; B0=$params.B0, a=$params.a, By=$params.By)
+    sols1 = solve_params(ProblemParamsBase(; B=cfg1, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    sols2 = solve_params(ProblemParamsBase(; B=cfg2, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    df1 = process_sols(sols1)
+    df2 = process_sols(sols2)
+    plot_transition_matrix!(fig[1, 1], df1)
+    plot_transition_matrix!(fig[1, 2], df2)
+    Label(fig[0, 1], "Bₓ = B₀ (z/L) / (1 + a (z/L)²)²"; tellwidth=false)
+    Label(fig[0, 2], "Bₓ = B₀ tanh(z/L) / (1 + a (z/L)²)²"; tellwidth=false)
 end
 fig
 
 bake_html(
     params => (
+        (@o _.B0) => [1.0, 10.0],
         (@o _.a) => [0.0, 0.05, 0.1, 0.2, 0.5],
         (@o _.By) => [0.0, 0.5, 1.0],
     );
     blocks=[fig],
-    outdir="./transition_matrices"
+    outdir="./web/transition_matrices"
 )
-
 ```
 

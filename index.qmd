@@ -1,3 +1,12 @@
+---
+title: Particle Scattering in Cusp-Like Current Sheet
+---
+
+# Interactive Parameters Scan
+
+[Basic Parameters](web/transition_matrices/index.html)
+
+# References
 
 - @artemyevIonMotionCurrent2013
 - @artemyevSuperfastIonScattering2020

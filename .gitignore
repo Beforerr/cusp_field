@@ -1,1 +1,5 @@
 *.nb
+/.quarto/
+**/*.quarto_ipynb
+_manuscript/
+web/

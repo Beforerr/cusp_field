@@ -1,17 +1,11 @@
 project:
   type: manuscript
 
-website:
-  sidebar:
-    contents: auto
-  navbar:
-    left:
-      - text: "Home"
-        href: index.qmd
-
 manuscript:
   article: index.qmd
   code-links: [repo]
+  resources:
+    - web/transition_matrices/**
 
 bibliography:
   - research.bib
