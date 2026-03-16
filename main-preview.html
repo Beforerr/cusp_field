@@ -243,15 +243,17 @@ using CurrentSheetTestParticle.Analysis</code></pre>
 <pre><code>using Observables
 using CairoMakie, MakieBake
 
-params = Observable((B0=10., a=0.1, By=0.0))
+params = Observable((v=1.0, B0=10.0, a=0.1, By=0.0))
 
 fig = Figure(; size=(800, 400))
 @lift begin
     save_everystep = false
+    tspan = (0.0, 1024.0)
+    init_kwargs = (; Nw=64, Nϕ=32)
     cfg1 = BConfig(; B0=$params.B0, a=$params.a, By=$params.By)
     cfg2 = BConfig2(; B0=$params.B0, a=$params.a, By=$params.By)
-    sols1 = solve_params(ProblemParamsBase(; B=cfg1, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
-    sols2 = solve_params(ProblemParamsBase(; B=cfg2, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    sols1 = solve_params(ProblemParamsBase(; v=$params.v, B=cfg1, init_kwargs); save_everystep, tspan)[1]
+    sols2 = solve_params(ProblemParamsBase(; v=$params.v, B=cfg2, init_kwargs); save_everystep, tspan)[1]
     df1 = process_sols(sols1)
     df2 = process_sols(sols2)
     plot_transition_matrix!(fig[1, 1], df1)
@@ -259,10 +261,14 @@ fig = Figure(; size=(800, 400))
     Label(fig[0, 1], "Bₓ = B₀ (z/L) / (1 + a (z/L)²)²"; tellwidth=false)
     Label(fig[0, 2], "Bₓ = B₀ tanh(z/L) / (1 + a (z/L)²)²"; tellwidth=false)
 end
-fig
+fig</code></pre>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [0]:</pre></div><div id="8" class="cell" data-execution_count="0">
+<pre><code>using MakieBake
 
 bake_html(
     params =&gt; (
+        (@o _.v) =&gt; [0.1, 1.0, 10.0],
         (@o _.B0) =&gt; [1.0, 10.0],
         (@o _.a) =&gt; [0.0, 0.05, 0.1, 0.2, 0.5],
         (@o _.By) =&gt; [0.0, 0.5, 1.0],
