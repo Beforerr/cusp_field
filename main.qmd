@@ -1,0 +1,104 @@
+---
+title: "Particle Scattering in a Cusp-Like Current Sheet"
+execute:
+  eval: false
+---
+
+# Particle Scattering in a Cusp-Like Current Sheet
+
+This notebook studies particle scattering in the magnetic field configuration
+
+$$
+B_z = B_n = \text{const}, \qquad
+B_x = B_0 \frac{z/L}{\!\left(1 + \tfrac{a}{2}\!\left(\tfrac{z}{L}\right)^{\!2}\right)^{\!2}}
+$$
+
+The corresponding field-line trajectory is
+
+$$
+x(z) = \frac{B_0}{B_n}\,\frac{\tfrac{1}{2}(z/L)^2}{1 + \tfrac{a}{2}(z/L)^2}
+$$
+
+which is the profile shown in the figure: field lines bend toward the
+current sheet centre ($z=0$) from both sides and approach an asymptote
+$x_\infty = B_0/(a B_n)$ as $|z|\to\infty$.
+
+```{julia}
+using Magnetostatics: MagneticField
+using StaticArrays
+
+"""
+B_x = B_0 * (z/L) / (1 + a * (z/L)^2)^2
+B_z = B_n = const
+B_y
+"""
+@kwdef struct BConfig{𝐵,𝐿} <: MagneticField
+    B0::𝐵
+    By::𝐵 = 0.0
+    Bz::𝐵 = 1.0
+    L::𝐿 = 1.0
+    a::Float64 = 0.0
+end
+
+function (c::BConfig)(z::Number)
+    z̃ = z / c.L
+    Bx = c.B0 * z̃ / (1 + c.a * z̃^2)^2
+    return SA[Bx, c.By, c.Bz]
+end
+
+# B_x = B_0 * (z/L) / (1 + a * (z/L)^2)^2
+@kwdef struct BConfig2{𝐵,𝐿} <: MagneticField
+    B0::𝐵
+    By::𝐵 = 0.0
+    Bz::𝐵 = 1.0
+    L::𝐿 = 1.0
+    a::Float64 = 0.0
+end
+
+function (c::BConfig2)(z::Number)
+    z̃ = z / c.L
+    Bx = c.B0 * tanh(z̃) / (1 + c.a * z̃^2)^2
+    return SA[Bx, c.By, c.Bz]
+end
+```
+
+## Setup
+
+```{julia}
+using CurrentSheetTestParticle
+using CurrentSheetTestParticle.Analysis
+```
+
+```{julia}
+using Observables
+using CairoMakie, MakieBake
+
+params = Observable((B0=10., a=0.1, By=0.0))
+
+fig = Figure(; size=(800, 400))
+@lift begin
+    save_everystep = false
+    cfg1 = BConfig(; B0=$params.B0, a=$params.a, By=$params.By)
+    cfg2 = BConfig2(; B0=$params.B0, a=$params.a, By=$params.By)
+    sols1 = solve_params(ProblemParamsBase(; B=cfg1, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    sols2 = solve_params(ProblemParamsBase(; B=cfg2, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    df1 = process_sols(sols1)
+    df2 = process_sols(sols2)
+    plot_transition_matrix!(fig[1, 1], df1)
+    plot_transition_matrix!(fig[1, 2], df2)
+    Label(fig[0, 1], "Bₓ = B₀ (z/L) / (1 + a (z/L)²)²"; tellwidth=false)
+    Label(fig[0, 2], "Bₓ = B₀ tanh(z/L) / (1 + a (z/L)²)²"; tellwidth=false)
+end
+fig
+
+bake_html(
+    params => (
+        (@o _.B0) => [1.0, 10.0],
+        (@o _.a) => [0.0, 0.05, 0.1, 0.2, 0.5],
+        (@o _.By) => [0.0, 0.5, 1.0],
+    );
+    blocks=[fig],
+    outdir="./web/transition_matrices"
+)
+```
+
