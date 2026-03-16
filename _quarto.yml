@@ -1,0 +1,24 @@
+project:
+  type: manuscript
+
+website:
+  sidebar:
+    contents: auto
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+
+manuscript:
+  article: index.qmd
+  code-links: [repo]
+
+bibliography:
+  - research.bib
+
+wrap: preserve
+
+execute:
+  eval: false
+
+engines: [julia]

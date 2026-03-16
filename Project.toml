@@ -1,0 +1,10 @@
+[deps]
+AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+CurrentSheetTestParticle = "70b924fa-544d-466c-bf9c-e2ef4b9a84d3"
+Magnetostatics = "a95f4e4b-d819-46a2-b455-0f3018e15a60"
+MakieBake = "a115e09d-244e-4709-8d7d-89753b11a70b"
+MakieExtra = "54e234d5-9986-40d8-815f-a5e42de435f6"
+Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
+PitchAngleAnalysis = "5e62bb7e-3623-422e-96d5-a0eafffd4e59"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
