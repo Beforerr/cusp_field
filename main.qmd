@@ -73,15 +73,17 @@ using CurrentSheetTestParticle.Analysis
 using Observables
 using CairoMakie, MakieBake
 
-params = Observable((B0=10., a=0.1, By=0.0))
+params = Observable((v=1.0, B0=10.0, a=0.1, By=0.0))
 
 fig = Figure(; size=(800, 400))
 @lift begin
     save_everystep = false
+    tspan = (0.0, 1024.0)
+    init_kwargs = (; Nw=64, Nϕ=32)
     cfg1 = BConfig(; B0=$params.B0, a=$params.a, By=$params.By)
     cfg2 = BConfig2(; B0=$params.B0, a=$params.a, By=$params.By)
-    sols1 = solve_params(ProblemParamsBase(; B=cfg1, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
-    sols2 = solve_params(ProblemParamsBase(; B=cfg2, init_kwargs=(; Nw=64, Nϕ=32)); save_everystep)[1]
+    sols1 = solve_params(ProblemParamsBase(; v=$params.v, B=cfg1, init_kwargs); save_everystep, tspan)[1]
+    sols2 = solve_params(ProblemParamsBase(; v=$params.v, B=cfg2, init_kwargs); save_everystep, tspan)[1]
     df1 = process_sols(sols1)
     df2 = process_sols(sols2)
     plot_transition_matrix!(fig[1, 1], df1)
@@ -90,9 +92,14 @@ fig = Figure(; size=(800, 400))
     Label(fig[0, 2], "Bₓ = B₀ tanh(z/L) / (1 + a (z/L)²)²"; tellwidth=false)
 end
 fig
+```
+
+```{julia}
+using MakieBake
 
 bake_html(
     params => (
+        (@o _.v) => [0.1, 1.0, 10.0],
         (@o _.B0) => [1.0, 10.0],
         (@o _.a) => [0.0, 0.05, 0.1, 0.2, 0.5],
         (@o _.By) => [0.0, 0.5, 1.0],
