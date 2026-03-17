@@ -6,7 +6,22 @@ title: Particle Scattering in Cusp-Like Current Sheet
 
 [Basic Parameters](web/transition_matrices/index.html)
 
+[Field Line Profiles](web/fieldlines/index.html)
+
+# Geometric Configuration
+
+The corresponding field-line trajectory is
+
+$$
+x(z) = \frac{B_0}{B_n}\,\frac{\tfrac{1}{2}(z/L)^2}{1 + \tfrac{a}{2}(z/L)^2}
+$$
+
+which is the profile shown in the figure: field lines bend toward the
+current sheet centre ($z=0$) from both sides and approach an asymptote
+$x_\infty = B_0/(a B_n)$ as $|z|\to\infty$.
+
 # References
 
 - @artemyevIonMotionCurrent2013
 - @artemyevSuperfastIonScattering2020
+- @malaraChargedparticleChaoticDynamics2021
