@@ -58,6 +58,35 @@ div.csl-indent {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-8ffd5f67044e5306d9846f29df41dda5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta name="citation_title" content="Particle Scattering in Cusp-Like Current Sheet">
 <meta name="citation_language" content="en">
@@ -1115,6 +1144,7 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=An empirical plasmasphere and trough density model: CRRES observations;,citation_author=B. W. Sheeley;,citation_author=M. B. Moldwin;,citation_author=H. K. Rassoul;,citation_author=R. R. Anderson;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_issue=A11;,citation_doi=10.1029/2000JA000286;,citation_issn=2156-2202;,citation_volume=106;,citation_language=en-US;,citation_journal_title=Journal of Geophysical Research: Space Physics;">
 <meta name="citation_reference" content="citation_title=Comparing Plasma Anisotropy Associated with Solar Wind Discontinuities and Alfvénic Fluctuations;,citation_author=Yangyang Shen;,citation_author=Anton Artemyev;,citation_author=Vassilis Angelopoulos;,citation_author=Terry Z. Liu;,citation_author=Ivan Vasko;,citation_publication_date=2024-01;,citation_cover_date=2024-01;,citation_year=2024;,citation_issue=1;,citation_doi=10.3847/1538-4357/ad110b;,citation_issn=0004-637X;,citation_volume=961;,citation_language=en-US;,citation_journal_title=The Astrophysical Journal;,citation_publisher=The American Astronomical Society;">
 <meta name="citation_reference" content="citation_title=Comparing plasma anisotropy associated with solar wind discontinuities and Alfvénic fluctuations;,citation_author=Yangyang Shen;,citation_publication_date=2024-02;,citation_cover_date=2024-02;,citation_year=2024;,citation_language=en-US;">
+<meta name="citation_reference" content="citation_title=Contribution of Kinetic Alfvén Waves to Energetic Electron Precipitation From the Plasma Sheet During a Substorm;,citation_author=Yangyang Shen;,citation_author=Anton V. Artemyev;,citation_author=Xiao-Jia Zhang;,citation_author=Ying Zou;,citation_author=Vassilis Angelopoulos;,citation_author=Ivan Vasko;,citation_author=Andrei Runov;,citation_author=Ethan Tsai;,citation_author=Colin Wilkins;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=4;,citation_doi=10.1029/2023JA031350;,citation_issn=2169-9402;,citation_volume=128;,citation_language=en-US;,citation_journal_title=Journal of Geophysical Research: Space Physics;">
 <meta name="citation_reference" content="citation_title=Energetic Electron Flux Dropouts Measured by ELFIN in the Ionospheric Projection of the Plasma Sheet;,citation_author=Yangyang Shen;,citation_author=Anton V. Artemyev;,citation_author=Andrei Runov;,citation_author=Vassilis Angelopoulos;,citation_author=Jiang Liu;,citation_author=Xiao-Jia Zhang;,citation_author=James M. Weygand;,citation_author=Jiashu Wu;,citation_author=Ethan Tsai;,citation_author=Colin Wilkins;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_issue=9;,citation_doi=10.1029/2023JA031631;,citation_issn=2169-9402;,citation_volume=128;,citation_language=en-US;,citation_journal_title=Journal of Geophysical Research: Space Physics;">
 <meta name="citation_reference" content="citation_title=Stability and bifurcations in averaged models of dynamics;,citation_author=Mickey Sheng;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_doi=10.26174/thesis.lboro.14125991;,citation_language=en-US;,citation_dissertation_institution=Loughborough University;">
 <meta name="citation_reference" content="citation_title=Altitude-adjusted corrected geomagnetic coordinates: Definition and functional approximations;,citation_author=S. G. Shepherd;,citation_publication_date=2014;,citation_cover_date=2014;,citation_year=2014;,citation_issue=9;,citation_doi=10.1002/2014JA020264;,citation_issn=2169-9402;,citation_volume=119;,citation_language=en-US;,citation_journal_title=Journal of Geophysical Research: Space Physics;">
@@ -1536,6 +1566,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#interactive-parameters-scan" id="toc-interactive-parameters-scan" class="nav-link active" data-scroll-target="#interactive-parameters-scan">Interactive Parameters Scan</a></li>
+  <li><a href="#geometric-configuration" id="toc-geometric-configuration" class="nav-link" data-scroll-target="#geometric-configuration">Geometric Configuration</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="main-preview.html"><i class="bi bi-journal-code"></i>Particle Scattering in a Cusp-Like Current Sheet</a></li></ul></div></nav>
@@ -1552,12 +1583,24 @@ div.csl-indent {
 <section id="interactive-parameters-scan" class="level1">
 <h1>Interactive Parameters Scan</h1>
 <p><a href="web/transition_matrices/index.html">Basic Parameters</a></p>
+<p><a href="web/fieldlines/index.html">Field Line Profiles</a></p>
+</section>
+<section id="geometric-configuration" class="level1">
+<h1>Geometric Configuration</h1>
+<p>The corresponding field-line trajectory is</p>
+<p><span class="math display">\[
+x(z) = \frac{B_0}{B_n}\,\frac{\tfrac{1}{2}(z/L)^2}{1 + \tfrac{a}{2}(z/L)^2}
+\]</span></p>
+<p>which is the profile shown in the figure: field lines bend toward the
+current sheet centre (<span class="math inline">\(z=0\)</span>) from both sides and approach an asymptote
+<span class="math inline">\(x_\infty = B_0/(a B_n)\)</span> as <span class="math inline">\(|z|\to\infty\)</span>.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
 <ul>
 <li><span class="citation" data-cites="artemyevIonMotionCurrent2013">Artemyev et al. (<a href="#ref-artemyevIonMotionCurrent2013" role="doc-biblioref">2013</a>)</span></li>
 <li><span class="citation" data-cites="artemyevSuperfastIonScattering2020">Artemyev et al. (<a href="#ref-artemyevSuperfastIonScattering2020" role="doc-biblioref">2020</a>)</span></li>
+<li><span class="citation" data-cites="malaraChargedparticleChaoticDynamics2021">Malara et al. (<a href="#ref-malaraChargedparticleChaoticDynamics2021" role="doc-biblioref">2021</a>)</span></li>
 </ul>
 
 </section>
@@ -1568,6 +1611,9 @@ Artemyev, A. V., A. I. Neishtadt, A. A. Vasiliev, V. Angelopoulos, A. A. Vinogra
 </div>
 <div id="ref-artemyevIonMotionCurrent2013" class="csl-entry" role="listitem">
 Artemyev, A. V., A. I. Neishtadt, and L. M. Zelenyi. 2013. <span>“Ion Motion in the Current Sheet with Sheared Magnetic Field – <span>Part</span> 1: <span class="nocase">Quasi-adiabatic</span> Theory.”</span> <em>Nonlinear Processes in Geophysics</em> 20 (1): 163–78. <a href="https://doi.org/10.5194/npg-20-163-2013">https://doi.org/10.5194/npg-20-163-2013</a>.
+</div>
+<div id="ref-malaraChargedparticleChaoticDynamics2021" class="csl-entry" role="listitem">
+Malara, Francesco, Silvia Perri, and Gaetano Zimbardo. 2021. <span>“Charged-Particle Chaotic Dynamics in Rotational Discontinuities.”</span> <em>Physical Review E</em> 104 (2): 025208. <a href="https://doi.org/10.1103/PhysRevE.104.025208">https://doi.org/10.1103/PhysRevE.104.025208</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
